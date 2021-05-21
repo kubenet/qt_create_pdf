@@ -1,0 +1,14 @@
+cx-Freeze==6.6
+cx-Logging==3.0
+et-xmlfile==1.1.0
+importlib-metadata==4.0.1
+openpyxl==3.0.7
+Pillow==8.2.0
+PyPDF2==1.26.0
+PyQt5==5.15.4
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.8.1
+PyQt5-stubs==5.15.2.0
+pyuic5-tool==0.0.1
+reportlab==3.5.67
+zipp==3.4.1
