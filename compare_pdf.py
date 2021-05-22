@@ -1,4 +1,4 @@
-def compare_pdf():
+def compare_pdf(template):
     import os
     from PyPDF2 import PdfFileWriter, PdfFileReader
     import io
@@ -26,7 +26,7 @@ def compare_pdf():
         # read your existing PDF
         f = open("pdf\\" + file, "rb")
         text_pdf = PdfFileReader(f)
-        template_pdf = PdfFileReader(open("template_0.pdf", "rb"))
+        template_pdf = PdfFileReader(open("template//"+template, "rb"))
         output = PdfFileWriter()
 
         # add the "watermark" (which is the new pdf) on the existing page

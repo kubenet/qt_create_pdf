@@ -68,12 +68,12 @@ styles.add(ParagraphStyle(name='year_CENTER',
                           ))
 
 
-def string_guy(text):
-    return f'<font name="times">{text}</font>'
-
-
-def parag_guy(text, style=styles['Normal']):
-    return Paragraph(string_guy(text), styles['Normal'])
+# def string_guy(text):
+#     return f'<font name="times">{text}</font>'
+#
+#
+# def parag_guy(text, style=styles['Normal']):
+#     return Paragraph(string_guy(text), styles['Normal'])
 
 
 # im = Image("temp.png", 439, 685)
