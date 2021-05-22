@@ -10,9 +10,21 @@ from gen_pdf import generate_pdf
 from compare_pdf import compare_pdf as compare
 from clear_dir import clear
 
+
+if not os.path.exists('template'):  # True
+    os.mkdir('template')
+
+if not os.path.exists('user_lists'):  # True
+    os.mkdir('user_lists')
+
+if not os.path.exists('result'):  # True
+    os.mkdir('result')
+
+if not os.path.exists('pdf'):  # True
+    os.mkdir('pdf')
+
 templates = os.listdir('template')
 user_list = os.listdir('user_lists')
-
 
 def view_diplomas():
     os.system('explorer.exe "result"')
@@ -49,6 +61,7 @@ class ExampleApp(QtWidgets.QMainWindow, gui4.Ui_MainWindow):
         self.checkBox_3.setEnabled(False)  # элемент не активен
         self.checkBox_4.setChecked(False)  # по умолчанию конвертация в pdf выключена
         self.checkBox_4.setEnabled(False)  # элемент не активен
+        self.pushButton_4.setEnabled(False) # Элемент кнопка не активна
 
     def view_diplomas(self):
         # lists_path = Path('result')
@@ -60,32 +73,44 @@ class ExampleApp(QtWidgets.QMainWindow, gui4.Ui_MainWindow):
         self.label_5.setText(file_name)
 
     def start_generation(self):
-        clear("pdf//")  # очистка папки с шаблонами
-        clear("result//")  # очистка папки результатов
-
-        group_list = str(self.comboBox_2.currentText())
-        # --- radio button --- #
-        if self.radioButton.isChecked():    # Базовая группа
-            template = "template_base.pdf"
-        elif self.radioButton_2.isChecked():    # Проектная группа
-            template = "template_project.pdf"
-        elif self.radioButton_3.isChecked():    # Свой шаблон
-            template = self.comboBox.currentText()  # Выбор шаблона из списка
-        if not self.radioButton.isChecked() and not self.radioButton_2.isChecked() and not self.radioButton_3.isChecked():
-            QMessageBox.about(self, "Внимание", "Выберите тип шаблона: Базовый, Проектный, Свой")
+        if self.comboBox.currentText() == "":
+            # print("comboBox Empty")
+            QMessageBox.about(self, "Внимание", "Не выбран шаблон. Добавьте шаблон в папку \"template\"")
+            return 0
+        if self.comboBox_2.currentText() == "":
+            print("comboBox2 Empty")
+            QMessageBox.about(self, "Внимание", "Не выберан excel докумен. Поместите его в папку \"user_lists\"")
+            return 0
         else:
-            # # --- checkBox --- #
-            # if self.checkBox_2.isChecked():   # Сохранить в один файл
-            # if self.checkBox_3.isChecked():   # Дата начала и окончания
-            date2 = self.dateEdit.date().toString('dd.MM.yyyy')     # дата окончания
-            date1 = self.dateEdit_2.date().toString('dd.MM.yyyy')   # дата начала
-            duration = self.lineEdit.text()     # количество часов (в объеме 72 часа)
-            self.label_5.setText("Готовим PDF...")
-            rezult = generate_pdf(group_list, date1, date2, duration)
-            if rezult == 0:
-                print("rez OK!")
-                compare(template)  # объединение шаблона с данными в pdf
-            self.label_5.setText("PDF готовы")
+            clear("pdf//")  # очистка папки с шаблонами
+            clear("result//")  # очистка папки результатов
+
+            group_list = str(self.comboBox_2.currentText())
+                # --- radio button --- #
+            if self.radioButton.isChecked():  # Базовая группа
+                template = "template_base.pdf"
+            elif self.radioButton_2.isChecked():  # Проектная группа
+                template = "template_project.pdf"
+            elif self.radioButton_3.isChecked():  # Свой шаблон
+                template = self.comboBox.currentText()  # Выбор шаблона из списка
+            if not self.radioButton.isChecked() and not self.radioButton_2.isChecked() and not self.radioButton_3.isChecked():
+                QMessageBox.about(self, "Внимание", "Выберите тип шаблона: Базовый, Проектный, Свой")
+            else:
+                    # # --- checkBox --- #
+                    # if self.checkBox_2.isChecked():   # Сохранить в один файл
+                    # if self.checkBox_3.isChecked():   # Дата начала и окончания
+                date2 = self.dateEdit.date().toString('dd.MM.yyyy')  # дата окончания
+                date1 = self.dateEdit_2.date().toString('dd.MM.yyyy')  # дата начала
+                duration = self.lineEdit.text()  # количество часов (в объеме 72 часа)
+                self.label_5.setText("Готовим PDF...")
+                rezult = generate_pdf(group_list, date1, date2, duration)
+                if rezult == 0:
+                    print("rez OK!")
+                    if template == "":
+                        QMessageBox.about(self, "Выберите шаблон документа")
+                    compare(template)  # объединение шаблона с данными в pdf
+                self.label_5.setText("PDF готовы")
+                clear("pdf//")  # очистка папки с шаблонами
 
 
 def main():

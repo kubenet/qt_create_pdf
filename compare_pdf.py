@@ -1,4 +1,5 @@
 def compare_pdf(template):
+
     import os
     from PyPDF2 import PdfFileWriter, PdfFileReader
     import io
